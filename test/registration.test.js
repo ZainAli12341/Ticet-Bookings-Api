@@ -5,7 +5,7 @@ const {sighnUp,sighnIn,logOut}  = require('../controllers/registration-controlle
 describe('POST /signup', () => {
     test('should create a new user and return a JWT token', async () => {
       const response            = await request(sighnUp)
-        .post('/signup')
+        .post('/ticketseasy/api/v1/registration/signup')
         .send({
           username:              'input dalain kro check',
           password:              'input dalain kro check',
@@ -20,7 +20,7 @@ describe('POST /signup', () => {
 describe('POST /signin', () => {
   test('should return a JWT token for a valid user', async () => {
       const response            = await request(sighnIn)
-        .post('/signin')
+        .post('/ticketseasy/api/v1/registration/signin')
         .send({
           email:                 'input dalain kro check',
           password:              'input dalain kro check',
@@ -36,7 +36,7 @@ describe('POST /signin', () => {
 describe('POST/logout', () => {
   test('should return a JWT token for a valid user', async () => {
     const response              = await request(logOut)
-      .post('/logout')
+      .post('/ticketseasy/api/v1/registration/logout')
       .send({
         email:                   'input dalain kro check',
         password:                'input dalain kro check',
@@ -44,7 +44,7 @@ describe('POST/logout', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('token');
-  
+    
   });
 });
 
