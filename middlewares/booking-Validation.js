@@ -3,7 +3,7 @@ const yup                    = require('yup')
 const TicketBookingSchema    = yup.object({
 username:               yup.string().required(),
 routesId:               yup.string().required(),
-detailsForRoute:        yup.object().required(),
+detailsForRoute:        yup.object(),
 departure:              yup.string().required(),
 arrival:                yup.string().required() 
    

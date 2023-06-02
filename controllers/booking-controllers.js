@@ -1,21 +1,15 @@
 const TicketsBooking = require('../models/booking-models')
 const BusRoutes      = require('../models/roots-models')
-
-const greet          = async(req,res) => {
+const {bookticket,roots} = require('../adapters/roots-adapters')
+const greet = async(req,res) => {
     res.status(200).send("HELLO USER WELCOME TO TICKET EASY BRO !")
 }
 
 const bookyourticket = async(req,res) => {
-    const {username,routes,departure,arrival} = req.body
-    const yourRoute  =    await BusRoutes.findOne({id:routes});
-    const result     =    await TicketsBooking.create({
-        username:         username,
-        routes:           "routes",
-        detailsForRoute: {"Ticket has been booked for":yourRoute },
-        departure:        departure,
-        arrival:          arrival
-    })
+    const yourRoute = await roots(req.body.routes)
+    const result = await bookticket(req.body.username,req.body.routes,req.body.departure,req.body.arrival)
     console.log(result)
-    res.status(200).json({"Status": "Ticket has been booked for ","Username": result.user, yourRoute })}
+    const str="Ticket has been booked for "
+    res.status(200).json({"Status":str,"Username": req.body.username, "route": yourRoute })}
 
-module.exports       =   {greet,bookyourticket}
+module.exports = {greet,bookyourticket}

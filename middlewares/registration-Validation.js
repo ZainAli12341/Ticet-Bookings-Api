@@ -4,13 +4,13 @@ const yup                      = require('yup')
 
 const userssinghnupSchema      = yup.object({
     email:      yup.string().email().required(),
-    password:   yup.string().min(8).max(12).required(),
+    password:   yup.string().required(),
     username:   yup.string().required()
 })
 
 const userssinghninSchema      = yup.object({
     email:      yup.string().email().required(),
-    password:   yup.string().min(8).max(12).required()
+    password:   yup.string().required()
     }).required()
 
 const userslogoutSchema        = yup.object({

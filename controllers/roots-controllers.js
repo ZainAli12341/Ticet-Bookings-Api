@@ -1,12 +1,9 @@
-const BusRoutes                 = require('../models/roots-models')
+const {routeCreation,allrootsdetails,getOneroot} = require('../adapters/roots-adapters')
+const BusRoutes = require('../models/roots-models')
 
-const allRoutes                 = async (req,res) => {
-    let {from,to,price}         = req.body
-    const result                = await BusRoutes.create({
-            from: from,
-            to: to,
-            price: price,    
-    })
+const allRoutes = async (req,res) => {
+
+  const result = routeCreation(req.body.from,req.body.to,req.body.price)
     console.log(result)
 try {
     res.status(200).json({message: "route created"})
@@ -17,21 +14,17 @@ catch (e) {
 }
 
 const showingallroutewithprice  =  async(req,res) => {
-        const showAll = await BusRoutes.find()
+        const showAll = allrootsdetails()
         res.json({"All Routes ":showAll})
 
 
     }
-const oneWayrouteprice          =   async(req,res)=>{
-  const  {id} = req.params
-  const findOne = await BusRoutes.findById({
-    _id: id
-  })  
+const oneWayrouteprice = async(req,res)=>{
+
+  const findOne = getOneroot(req.params.id)
   res.json({
-    "Your selected route": findOne
+    "Selected Route": findOne
   })
 
 }
-
-
-module.exports                  = {allRoutes,showingallroutewithprice,oneWayrouteprice}
+module.exports = {allRoutes,showingallroutewithprice,oneWayrouteprice}

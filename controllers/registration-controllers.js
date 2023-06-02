@@ -5,26 +5,24 @@ const TicketsRegistration=require('../models/registration-models')
 const { match }     = require('assert')
 const SECRET_KEY    = "HELLOOHANJI"
 const saltRounds    = 10;
+const {checkUser,userCreation}=require('../adapters/roots-adapters')
 const sighnUp = async(req,res) => {
 
     let { email , password, username } = req.body
 
     try{
-        const existingUser = await TicketsRegistration.findOne({ email: email })
-        if(existingUser){
+        const existingUser = await checkUser(email)
+        if(existingUser == true ){
             return res.status(400).json({ message: "User already exists" })
         }
+
+
 
         let salt           = await bcrypt.genSalt(saltRounds)
         let hashedPassword = await bcrypt.hash(password , salt)
 
-        const result       = await Register.create({
-            email: email,
-            password: hashedPassword,
-            username: username
-        });
-
-        const token        = jwt.sign({
+        const result = await userCreation(email,username,hashedPassword)
+        const token  = jwt.sign({
             email: result.email,
             id: result._id
         },SECRET_KEY);
@@ -41,10 +39,10 @@ const sighnUp = async(req,res) => {
 
 }
  
-const sighnIn              = async(req,res) => {
+const sighnIn = async(req,res) => {
 const { email, password }  = req.body
     try {
-        const existingUser = await TicketsRegistration.findOne({ email: email });
+        const existingUser = await checkUser(email);
         if(!existingUser){
             return res.status(404).json({ message: "user not found " })
         }
@@ -67,10 +65,10 @@ const { email, password }  = req.body
         res.status(500).json({ message: "Something went wrong" })
     }
 }   
-const logOut               =  async(req,res) => {
+const logOut  = async(req,res) => {
 const { email, password }  = req.body
     try {
-        const existingUser = await TicketsRegistration.findOne({ email: email });
+        const existingUser =await checkUser(email);
         if(!existingUser){
             return res.status(404).json({ message: "user not found " })
         }
@@ -85,7 +83,7 @@ const { email, password }  = req.body
 
         res.status(201).json({
          //   user: existingUser,
-            token: token
+          "Logged Out":"GoodbyeUser"
         })
         }
     catch(e){
@@ -97,6 +95,6 @@ const { email, password }  = req.body
 
 }
 
-module.exports            = {sighnUp,sighnIn,logOut}
+module.exports = {sighnUp,sighnIn,logOut}
 
  

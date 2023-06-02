@@ -3,9 +3,9 @@ const {allRoutes}             = require('../controllers/roots-controllers')
 const yup                     = require('yup')
 
 const routesPostingSchema     = yup.object({
-    from:                       yup.string().required(),
-    to:                         yup.string().required(),
-    price:                      yup.string().required()
+    from:                       yup.string(),
+    to:                         yup.string(),
+    price:                      yup.string()
 })
 
 
